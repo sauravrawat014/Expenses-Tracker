@@ -13,7 +13,7 @@ export default function Login(){
 
         try{
             setLoading(true);
-        const {data} = await axios.post("http://localhost:8080/api/v1/users/login", values);
+        const {data} = await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/users/login", values);
         message.success("Login Successful", 5);
         localStorage.setItem('user', JSON.stringify({...data.user,password:''}));
         setLoading(false);
