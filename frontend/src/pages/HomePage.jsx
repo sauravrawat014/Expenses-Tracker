@@ -67,14 +67,14 @@ export default function Home(){
             const user = JSON.parse(localStorage.getItem('user'));
             setLoading(true);
            if(editable){
-             await axios.post("http://localhost:8080/api/v1/transactions/editTransaction",{payload:{
+             await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/editTransaction",{payload:{
                 ...values, userId:user._id
              }, transactionId: editable._id});
             setLoading(false);
             message.success("Transaction Updated Successfully");
 
            } else{
-             await axios.post("http://localhost:8080/api/v1/transactions/addTransaction",{...values, userId:user._id});
+             await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/addTransaction",{...values, userId:user._id});
             setLoading(false);
             message.success("Transaction Added Successfully");
            }
@@ -95,7 +95,7 @@ export default function Home(){
 
         try{
             setLoading(true);
-          await axios.post("http://localhost:8080/api/v1/transactions/deleteTransaction",{TransactionId: record._id});
+          await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/deleteTransaction",{TransactionId: record._id});
           setLoading(false);
           message.success("transaction Deleted");
           setTransactions((prev)=> prev.filter((transaction) => transaction._id != record._id));
@@ -111,7 +111,7 @@ export default function Home(){
         try{
         const user = JSON.parse(localStorage.getItem("user"));
         setLoading(true);
-        const res = await axios.post("http://localhost:8080/api/v1/transactions/showTransaction", {userId:user._id, frequency,selectedDate,type});
+        const res = await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/showTransaction", {userId:user._id, frequency,selectedDate,type});
         setLoading(false);
         setTransactions(res.data);
         message.success("Transactions Fetched Successful");
