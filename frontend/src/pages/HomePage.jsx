@@ -5,7 +5,7 @@ import Layout from "../components/layouts/Layout";
 import axios from "axios";
 import Spinner from "../components/layouts/Spinner";
 import moment from 'moment';
-import Analytics from "../components/layouts/analytics";
+import Analytics from "../components/layouts/Analytics";
 const {RangePicker} = DatePicker;
 
 export default function Home(){
