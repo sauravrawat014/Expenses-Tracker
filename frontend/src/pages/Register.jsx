@@ -13,7 +13,7 @@ export default function Register() {
 
         try{
             setLoading(true);
-        await axios.post("http://localhost:8080/api/v1/users/register", value);
+        await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/users/register", value);
         message.success("Registeration Successful");
         setLoading(false);
         navigate("/login");
