@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Modal, Form, Select, Input, message, Table, DatePicker } from "antd";
 import { UnorderedListOutlined, AreaChartOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Layout from "../components/layouts/Layout";
+import Layout from "../components/layouts/layout";
 import axios from "axios";
 import Spinner from "../components/layouts/Spinner";
 import moment from 'moment';
-import Analytics from "../components/layouts/Analytics";
+import Analytics from "../components/layouts/analytics";
 const {RangePicker} = DatePicker;
 
 export default function Home(){
@@ -18,6 +18,7 @@ export default function Home(){
     const [type, setType] = useState('all');
     const [viewData, setViewData] = useState('table');
     const [editable, setEditable] = useState(null);
+    const [form] = Form.useForm(); 
 
     const columns = [
         {
@@ -67,20 +68,21 @@ export default function Home(){
             const user = JSON.parse(localStorage.getItem('user'));
             setLoading(true);
            if(editable){
-             await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/editTransaction",{payload:{
+             await axios.post("http://localhost:8080/api/v1/transactions/editTransaction",{payload:{
                 ...values, userId:user._id
              }, transactionId: editable._id});
             setLoading(false);
             message.success("Transaction Updated Successfully");
 
            } else{
-             await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/addTransaction",{...values, userId:user._id});
+             await axios.post("http://localhost:8080/api/v1/transactions/addTransaction",{...values, userId:user._id});
             setLoading(false);
             message.success("Transaction Added Successfully");
            }
           
             setEditable(null);
             setShowModal(false);
+             form.resetFields();
              await getTransactions(); 
 
         } catch(error){
@@ -95,7 +97,7 @@ export default function Home(){
 
         try{
             setLoading(true);
-          await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/deleteTransaction",{TransactionId: record._id});
+          await axios.post("http://localhost:8080/api/v1/transactions/deleteTransaction",{TransactionId: record._id});
           setLoading(false);
           message.success("transaction Deleted");
           setTransactions((prev)=> prev.filter((transaction) => transaction._id != record._id));
@@ -111,7 +113,7 @@ export default function Home(){
         try{
         const user = JSON.parse(localStorage.getItem("user"));
         setLoading(true);
-        const res = await axios.post("https://expenses-tracker-ez61.onrender.com/api/v1/transactions/showTransaction", {userId:user._id, frequency,selectedDate,type});
+        const res = await axios.post("http://localhost:8080/api/v1/transactions/showTransaction", {userId:user._id, frequency,selectedDate,type});
         setLoading(false);
         setTransactions(res.data);
         message.success("Transactions Fetched Successful");
@@ -175,8 +177,8 @@ export default function Home(){
 
             </div>
 
-            <Modal title={editable ? "Edit Transaction" : "Add Transaction"} open={showModal} onCancel={()=>setShowModal(false)} footer={false}>
-                <Form layout="vertical" onFinish={handleSubmit} initialValues={editable}> 
+            <Modal title={editable ? "Edit Transaction" : "Add Transaction"} open={showModal} onCancel={()=>{setShowModal(false);  form.resetFields();}} footer={false}>
+                <Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={editable}> 
                     <Form.Item label="Amount" name="amount">
                         <Input type="text"/>
                     </Form.Item>
