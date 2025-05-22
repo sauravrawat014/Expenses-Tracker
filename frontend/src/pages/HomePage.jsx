@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Modal, Form, Select, Input, message, Table, DatePicker } from "antd";
 import { UnorderedListOutlined, AreaChartOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Layout from "../components/layouts/layout";
+import Layout from "../components/layouts/Layout";
 import axios from "axios";
 import Spinner from "../components/layouts/Spinner";
 import moment from 'moment';
-import Analytics from "../components/layouts/analytics";
+import Analytics from "../components/layouts/Analytics";
 const {RangePicker} = DatePicker;
 
 export default function Home(){
